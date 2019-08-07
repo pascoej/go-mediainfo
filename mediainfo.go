@@ -128,6 +128,13 @@ func (info MediaInfo) IsMedia() bool {
 	return info.Video.Duration != "" && info.Audio.Duration != ""
 }
 
+func getOrDefault(input []string, index int) string {
+	if len(input) > index {
+		return input[index]
+	}
+	return ""
+}
+
 func GetMediaInfo(fname string) (MediaInfo, error) {
 	info := MediaInfo{}
 	minfo := mediainfo{}
@@ -151,46 +158,46 @@ func GetMediaInfo(fname string) (MediaInfo, error) {
 
 	for _, v := range minfo.File.Tracks {
 		if v.Type == "General" {
-			general.Duration = v.Duration[0]
-			general.Format = v.Format[0]
-			general.File_size = v.File_size[0]
+			general.Duration = getOrDefault(v.Duration, 0)
+			general.Format = getOrDefault(v.Format, 0)
+			general.File_size = getOrDefault(v.File_size, 0)
 			if len(v.Overall_bit_rate_mode) > 0 {
-				general.Overall_bit_rate_mode = v.Overall_bit_rate_mode[0]
+				general.Overall_bit_rate_mode = getOrDefault(v.Overall_bit_rate_mode, 0)
 			}
-			general.Overall_bit_rate = v.Overall_bit_rate[0]
+			general.Overall_bit_rate = getOrDefault(v.Overall_bit_rate, 0)
 			general.Complete_name = v.Complete_name
 			general.File_name = v.File_name
 			general.File_extension = v.File_extension
-			general.Frame_rate = v.Frame_rate[0]
-			general.Stream_size = v.Stream_size[0]
+			general.Frame_rate = getOrDefault(v.Frame_rate, 0)
+			general.Stream_size = getOrDefault(v.Stream_size, 0)
 			general.Writing_application = v.Writing_application
 		} else if v.Type == "Video" {
-			video.Width = v.Width[0]
-			video.Height = v.Height[0]
-			video.Format = v.Format[0]
-			video.Bit_rate = v.Bit_rate[0]
-			video.Duration = v.Duration[0]
-			video.Bit_depth = v.Bit_depth[0]
-			video.Scan_type = v.Scan_type[0]
+			video.Width = getOrDefault(v.Width, 0)
+			video.Height = getOrDefault(v.Height,0)
+			video.Format = getOrDefault(v.Format,0)
+			video.Bit_rate = getOrDefault(v.Bit_rate,0)
+			video.Duration = getOrDefault(v.Duration,0)
+			video.Bit_depth = getOrDefault(v.Bit_depth,0)
+			video.Scan_type = getOrDefault(v.Scan_type,0)
 			video.Format_Info = v.Format_Info
-			video.Frame_rate = v.Frame_rate[0]
+			video.Frame_rate = getOrDefault(v.Frame_rate,0)
 			video.Format_profile = v.Format_profile
-			video.Interlacement = v.Interlacement[1]
-			video.Writing_library = v.Writing_library[0]
-			video.Format_settings__CABAC = v.Format_settings__CABAC[0]
-			video.Format_settings__ReFrames = v.Format_settings__ReFrames[0]
+			video.Interlacement = getOrDefault(v.Interlacement, 1)
+			video.Writing_library = getOrDefault(v.Writing_library,0)
+			video.Format_settings__CABAC = getOrDefault(v.Format_settings__CABAC,0)
+			video.Format_settings__ReFrames = getOrDefault(v.Format_settings__ReFrames,0)
 		} else if v.Type == "Audio" {
-			audio.Format = v.Format[0]
-			audio.Channel_s_ = v.Channel_s_[0]
-			audio.Duration = v.Duration[0]
-			audio.Bit_rate = v.Bit_rate[0]
+			audio.Format = getOrDefault(v.Format, 0)
+			audio.Channel_s_ = getOrDefault(v.Channel_s_, 0)
+			audio.Duration = getOrDefault(v.Duration, 0)
+			audio.Bit_rate = getOrDefault(v.Bit_rate, 0)
 			audio.Format_Info = v.Format_Info
-			audio.Frame_rate = v.Frame_rate[0]
-			audio.Sampling_rate = v.Sampling_rate[0]
+			audio.Frame_rate = getOrDefault(v.Frame_rate, 0)
+			audio.Sampling_rate = getOrDefault(v.Sampling_rate, 0)
 			audio.Format_profile = v.Format_profile
 		} else if v.Type == "Menu" {
-			menu.Duration = v.Duration[0]
-			menu.Format = v.Format[0]
+			menu.Duration = getOrDefault(v.Duration, 0)
+			menu.Format = getOrDefault(v.Format, 0)
 		}
 	}
 	info = MediaInfo{General: general, Video: video, Audio: audio, Menu: menu}
