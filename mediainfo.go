@@ -11,7 +11,7 @@ import (
 var mediainfoBinary = flag.String("mediainfo-bin", "mediainfo", "the path to the mediainfo binary if it is not in the system $PATH")
 
 type mediainfo struct {
-	XMLName xml.Name `xml:"MediaInfo"`
+	XMLName xml.Name `xml:"Mediainfo"`
 	File    file     `xml:"File"`
 }
 
@@ -139,7 +139,7 @@ func GetMediaInfo(fname string) (MediaInfo, error) {
 	if !IsInstalled() {
 		return info, fmt.Errorf("Must install mediainfo")
 	}
-	out, err := exec.Command(*mediainfoBinary, "--Output=XML", "-f", fname).Output()
+	out, err := exec.Command(*mediainfoBinary, "--Output=OLDXML", "-f", fname).Output()
 
 	if err != nil {
 		return info, err
